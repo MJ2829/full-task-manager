@@ -34,18 +34,26 @@ document.addEventListener('DOMContentLoaded', () => {
         taskList.innerHTML = '';
         tasks.forEach(task => {
             const li = document.createElement('li');
-            li.className = task.complete ? 'completed' : '';
+            li.style.padding = '10px';
+            li.style.margin = '5px 0';
 
-            li.innerHTML = `
-                <span>${task.text}</span>
-                <div>
-                    <button class="complete-btn" onclick="toggleComplete(${task.id})">
-                        ${task.complete ? 'Desmarcar' : 'Completar'}
-                    </button>
-                    <button class="edit-btn" onclick="editTask(${task.id})">Editar</button>
-                    <button class="delete-btn" onclick="deleteTask(${task.id})">Eliminar</button>
-                </div>
-            `;
+            if (task.complete) {
+                li.style.backgroundColor = 'lightgreen';
+                li.innerHTML = `
+                    <div>${task.text}</div>
+                    <div style="color: green; font-weight: bold;">Completado</div>
+                `;
+            } else {
+                li.innerHTML = `
+                    <span>${task.text}</span>
+                    <div>
+                        <button class="complete-btn" onclick="toggleComplete(${task.id})">Completar</button>
+                        <button class="edit-btn" onclick="editTask(${task.id})">Editar</button>
+                        <button class="delete-btn" onclick="deleteTask(${task.id})">Eliminar</button>
+                    </div>
+                `;
+            }
+
             taskList.appendChild(li);
         });
     }
@@ -66,7 +74,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     window.toggleComplete = function (id) {
-        tasks = tasks.map(task => 
+        tasks = tasks.map(task =>
             task.id === id ? { ...task, complete: !task.complete } : task
         );
         renderTasks();
